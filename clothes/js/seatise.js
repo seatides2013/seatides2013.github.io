@@ -31,10 +31,10 @@ function nav_ul_center() {
 
 function side() {
 	if($(window)["width"]() < 960) {
-		$(".nav_icon")["click"](function() {
+		/*$(".nav_icon")["click"](function() {
 			$(".side_close")["fadeIn"](500);
 			$(".navul")["slideDown"](400)
-		});
+		});*/
 		$(".side_close")["click"](function() {
 			$(".nav ul,.side_close")["fadeOut"](200)
 		})
