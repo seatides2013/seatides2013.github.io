@@ -1,11 +1,4 @@
-
-/*$(".gallery_list").append('<div class="gallery_box"><img src="http://twenhua.cn/thumbs/01-49f2a465967ba3bc331b9472491b2065.jpg"><span>&nbsp;</span><a href="http://twenhua.cn/detail/c:categories/p:2016/n:1"></a></div>');
-$(".gallery_list").append('<div class="gallery_box"><img src="http://twenhua.cn/thumbs/01-49f2a465967ba3bc331b9472491b2065.jpg"><span>&nbsp;</span><a href="http://twenhua.cn/detail/c:categories/p:2016/n:1"></a></div>');
-$(document).ready(function() {
-	var objectId = UrlParm.parm("objectId");
-    var style = UrlParm.parm("style"); 
-})*/
-var style = "短袖款";
+var style = "时尚风";
 var skipNum = 0;
 $(document).ready(function() {
 	/*var objectId = UrlParm.parm("objectId");*/
@@ -23,7 +16,7 @@ function getDesignData(style) {
 
 	// 返回最多9条数据
 	query.limit(9);
-	query.skip(skipNum);
+	query.skip(skipNum*9);
 	query.equalTo("style", style);
 	removeMyChild(".gallery_list");
 	// 查询所有数据
@@ -37,7 +30,25 @@ function getDesignData(style) {
 				$(".gallery_img:eq(" + i + ")").attr("src", object.get("image"));
 				$(".gallery_box >span:eq(" + i + ")").text(object.get("description"));
 				$(".gallery_box >a:eq(" + i + ")").attr("href", "details.html?style=" + style + "&objectId=" + object.id);
+			
 			}
+			//初始化页码
+			var $children = $(".page").children();
+		
+			for(var j = 0; j < $children.length; j++) {
+	        $(".page>li:eq(" + j + ")").attr("class", "");
+               }  
+            $(".page>li:eq(" + skipNum + ")").attr("class", "page_on");
+            
+            var $children1 = $(".catg_name").children();
+            for(var j = 0; j < $children1.length; j++) {
+						$(".catg_name>a:eq(" + j + ")").attr("class", "");
+						$(".catg_name>a:eq(" + j+ ")").css("color","#333333");
+			}
+					$(".catg_name>a:eq(" + clothesTagNum+ ")").attr("class", "on");
+					$(".catg_name>a:eq(" + clothesTagNum+ ")").css("color","white");
+					var h8 = $(".catg_name a.on")["html"]();
+	                $(".catg_hide p")["html"](h8);
 		},
 		error: function(error) {
 			console.log(error.message);
@@ -59,21 +70,22 @@ function getDesignCount(style) {
 			var num = Math.ceil(count / 9);
 			for(var i = 0; i < num; i++) {
 				$(".page").append(code);
-				if(i == 0) {
+				/*if(i == 0) {
 					$(".page>li:eq(0)").attr("class", "page_on");
-				}
+				}*/
+				
 				$(".design-span:eq(" + i + ")").text(i + 1);
 				(function(arg, i) {
 
 					arg.click(function() {
-						var $children = $(".page").children();
+					
+						skipNum = i;
+						
 						getDesignCount(style);
 						getDesignData(style);
-						skipNum = i;
-						for(var j = 0; j < $children.length; j++) {
-							$(".page>li:eq(" + j + ")").removeAttr("class");
-						}
-						arg.attr("class", "on");
+						
+						
+						
 					})
 				})($(".page>li:eq(" + i + ")"), i);
 
@@ -92,8 +104,8 @@ function removeMyChild(myClass) {
 		$(myClass)[0].removeChild(childNode);
 	}
 }
-var clothesTag = "短袖款";
-
+var clothesTag = "时尚风";
+var clothesTagNum = 0;
 function setDesignStyleClick() {
 	var $children = $(".catg_name").children();
 	for(var i = 0; i < $children.length; i++) {
@@ -101,20 +113,19 @@ function setDesignStyleClick() {
 		if($catg_click.html() == style) {
 			$catg_click.attr("class", "on");
 		}
-		(function(arg) {
+		(function(arg,i) {
 
 			arg.click(function() {
 				if(arg.html() != clothesTag) {
 					clothesTag = arg.html();
 					style = clothesTag;
+					skipNum = 0;
+					clothesTagNum = i;
 					getDesignCount(arg.html());
 					getDesignData(arg.html());
-					for(var j = 0; j < $children.length; j++) {
-						$(".catg_name>a:eq(" + j + ")").removeAttr("class");
-					}
-					arg.attr("class", "on");
+					
 				}
 			})
-		})($catg_click);
+		})($catg_click,i);
 	}
 }

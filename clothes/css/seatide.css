@@ -233,8 +233,9 @@ pre{white-space: pre-wrap!important;}
 }
 .header_info img{max-height: 70px;}
 .header_info p{
-	line-height: 70px;
+	line-height: 40px;
 	font-size: 15px;
+	margin-left: 15px;
 	color: #212121;
 }
 .header_info a{
@@ -832,7 +833,7 @@ a#next:after{background-image: url(../images/btn-next.png);}
 .catg_hide_2{background-image: url(../images/down2.png) !important;}
 .catg_hide p{
 	font-size: 12px;
-	line-height: 44px;
+	/*line-height: 44px;*/
 	color: #4f79c5;
 }
 
